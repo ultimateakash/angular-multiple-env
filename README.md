@@ -1,27 +1,110 @@
-# AngularMultipleEnv
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.0.
+### <h1 align="center"  id="heading">Create Multiple Environments In Angular</h1>
+## environments 
+```
+ environment.ts
+ environment.stage.ts
+ environment.prod.ts
+```
+## angular.json
+```json
+"architect": {
+    "build": { 
+            ...
+            ...
+        },
+        "configurations": {
+            "production": {
+                "budgets": [
+                    {
+                        "type": "initial",
+                        "maximumWarning": "500kb",
+                        "maximumError": "1mb"
+                    },
+                    {
+                        "type": "anyComponentStyle",
+                        "maximumWarning": "2kb",
+                        "maximumError": "4kb"
+                    }
+                ],
+                "fileReplacements": [
+                    {
+                        "replace": "src/environments/environment.ts",
+                        "with": "src/environments/environment.prod.ts"
+                    }
+                ],
+                "outputHashing": "all"
+            },
+            "staging": {
+                "budgets": [
+                    {
+                        "type": "initial",
+                        "maximumWarning": "500kb",
+                        "maximumError": "1mb"
+                    },
+                    {
+                        "type": "anyComponentStyle",
+                        "maximumWarning": "2kb",
+                        "maximumError": "4kb"
+                    }
+                ],
+                "fileReplacements": [
+                    {
+                        "replace": "src/environments/environment.ts",
+                        "with": "src/environments/environment.stage.ts"
+                    }
+                ],
+                "outputHashing": "all"
+            },
+            "development": {
+                "buildOptimizer": false,
+                "optimization": false,
+                "vendorChunk": true,
+                "extractLicenses": false,
+                "sourceMap": true,
+                "namedChunks": true
+            }
+        },
+        "defaultConfiguration": "production"
+    },
+    "serve": {
+        "builder": "@angular-devkit/build-angular:dev-server",
+        "configurations": {
+            "production": {
+                "browserTarget": "angular-multiple-env:build:production"
+            },
+            "staging": {
+                "browserTarget": "angular-multiple-env:build:staging"
+            },
+            "development": {
+                "browserTarget": "angular-multiple-env:build:development"
+            }
+        },
+        "defaultConfiguration": "development"
+    } 
+}
+```
+## development
+```bash
+ng serve
+ng build
+```
 
-## Development server
+## staging
+```bash
+ng serve --c staging
+ng build --c staging
+```
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## production
+```bash
+ng serve --c production
+ng build --c production
+``` 
+## Note:-
+```bash
+--c is alias for --configuration 
+```
+```bash
+--prod is deprecated 
+```
